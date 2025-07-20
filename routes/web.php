@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 
+use App\Models\Post;
+
 Route::get('/', function () {
-    return view('home');
+    $posts = Post::latest()->get();
+    return view('home', compact('posts'));
 });
 
 // Blog CRUD Routes
@@ -15,7 +18,7 @@ Route::get('/all', [PostController::class, 'index'])->name('posts.index');
 Route::get('/create', [PostController::class, 'create'])->name('posts.create');
 
 // Store new post
-Route::put('/store', [PostController::class, 'store'])->name('posts.store');
+Route::post('/store', [PostController::class, 'store'])->name('posts.store');
 
 // Edit post form
 Route::get('/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
@@ -24,4 +27,4 @@ Route::get('/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
 Route::put('/update/{id}', [PostController::class, 'update'])->name('posts.update');
 
 // Delete post
-Route::get('/delete/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::delete('/delete/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
